@@ -1,16 +1,36 @@
 Laravel TODO API
 ==================
 
-### Description
+## Description
 TODO List API built on Laravel 8
 
-## Documentation URL
+## Dependencies
+- PHP >=7.3
+- Composer
+- mysql
 
+
+### How to run locally
+
+### Clone the repository
+- Run `git clone https://github.com/devugo/laravel-todo-api.git` on your terminal/cmd to pull the project
+### Install Dependencies
+- Run `composer install` in your project directory to download all dependencies
+### Setup Database
+- Create a databse with the name `laravel_todo_api` or use another name and ensure you change the name on the `.env` file.
+- Run `php artisan migrate` in the same project root to migrate database schema to the created databse.
+### Run the application
+- Run `php artisan serve` to start up local server to begin using our `TODO API`.
+
+Follow the documentation below to try out the various endpoints
+
+## DOCUMENTATION
+
+### Documentation URL
 - [docs](https://documenter.getpostman.com/view/14094805/TVzNHeRW).
 
 
-## TODOS
-
+### TODOS
 
 ### Get all todos
 
@@ -18,10 +38,10 @@ TODO List API built on Laravel 8
 GET /api/v1/todos?perPage=20&page=1
 ```
 
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `perPage` | `integer` | No of items to retrieve per page |
-| `page` | `integer` | Pagination number |
+| Parameter | Type | Description | Default |
+| :--- | :--- | :--- | :--- |
+| `perPage` | `integer` | No of items to retrieve per page | 10 |
+| `page` | `integer` | Pagination number | 1 |
 
 
 ### Show a todo
@@ -112,8 +132,7 @@ PATCH /api/v1/groups
 
 ```http
 DELETE /api/v1/groups/1
-
-
+```
 
 
 ## Responses
