@@ -97,11 +97,11 @@ class TodoController extends Controller
 
             //  validation rules
             $rules = array(
-                isset($data['title'])  && 'title' => 'required|max:255',
-                // isset($data['description'])  && 'description' => 'nullable',
-                // isset($data['user'])  && 'user' => 'required|exists:users,id',
-                // isset($data['group'])  && 'group' => 'nullable|exists:groups,id',
-                // isset($data['type'])  && 'type' => 'nullable|max:150'
+                'title' => isset($data['title']) ? 'required|max:255' : '',
+                'description' => isset($data['description']) ? 'nullable' : '',
+                'user' => isset($data['user']) ?  'required|exists:users,id' : '',
+                'group' => isset($data['group']) ? 'nullable|exists:groups,id' : '',
+                'type' => isset($data['type']) ? 'nullable|max:150' : ''
             );
 
             // // validate
