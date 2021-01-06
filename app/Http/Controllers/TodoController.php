@@ -48,7 +48,6 @@ class TodoController extends Controller
         $todo = new Todo();
         $created = $todo->create([
             'title' => $data['title'],
-            'user_id' => $data['user'],
             'description' => isset($data['description']) ? $data['description'] : NULL,
             'group_id' => isset($data['group']) ? $data['group'] : NULL,
             'type' => isset($data['type']) ? $data['type'] : NULL
@@ -57,11 +56,9 @@ class TodoController extends Controller
         //  return 201 if created successfuly
         if($created){
             return response()->json($created, 201);
-        }else{
-            return response()->json(array('message' => 'There was an error creating todo'), 400);
         }
-        return back();
-        //
+
+        return response()->json(array('message' => 'There was an error creating todo'), 400);
     }
 
     /**
@@ -88,9 +85,7 @@ class TodoController extends Controller
      */
     public function update(Todo $todo)
     {
-       
-        // return $todo->title;
-        // return request()->title;
+        // Check if todo exists
         if($todo){
             // //  Get request data
             $data = request()->json()->all();
@@ -99,7 +94,6 @@ class TodoController extends Controller
             $rules = array(
                 'title' => isset($data['title']) ? 'required|max:255' : '',
                 'description' => isset($data['description']) ? 'nullable' : '',
-                'user' => isset($data['user']) ?  'required|exists:users,id' : '',
                 'group' => isset($data['group']) ? 'nullable|exists:groups,id' : '',
                 'type' => isset($data['type']) ? 'nullable|max:150' : ''
             );
@@ -115,7 +109,6 @@ class TodoController extends Controller
             // Update Todo with updated data
             $todo->title = isset($data['title']) ? $data['title'] : $todo->title;
             $todo->description = isset($data['description']) ? $data['description'] : $todo->description;
-            $todo->user_id = isset($data['user']) ? $data['user'] : $todo->user_id;
             $todo->group_id = isset($data['group']) ? $data['group'] : $todo->group_id;
             $todo->type = isset($data['type']) ? $data['type'] : $todo->type;
             $updated = $todo->save();

@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,18 +26,18 @@ Route::group(['prefix' => 'v1'], function () {
     // TODOS ROUTES
     Route::group(['prefix' => 'todos'], function () {
         Route::get('/', [TodoController::class, 'index'])->name('todos');
-        Route::get('/{todo}/show', [TodoController::class, 'show'])->name('todos.show');
-        Route::post('/create', [TodoController::class, 'create'])->name('todos.create');
-        Route::patch('/{todo}/update', [TodoController::class, 'update'])->name('todos.update');
-        Route::delete('/{todo}/destroy', [TodoController::class, 'destroy'])->name('todos.destroy');
+        Route::get('/{todo}', [TodoController::class, 'show'])->name('todos.show');
+        Route::post('/', [TodoController::class, 'create'])->name('todos.create');
+        Route::patch('/{todo}', [TodoController::class, 'update'])->name('todos.update');
+        Route::delete('/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy');
     });
 
     // GROUPS ROUTES
     Route::group(['prefix' => 'groups'], function () {
-        // Route::get('/', [TodoController::class, 'index'])->name('todos');
-        // Route::get('/{todo}/show', [TodoController::class, 'show'])->name('todos.show');
-        // Route::post('/create', [TodoController::class, 'create'])->name('todos.create');
-        // Route::patch('/{todo}/update', [TodoController::class, 'update'])->name('todos.update');
-        // Route::delete('/{todo}/destroy', [TodoController::class, 'destroy'])->name('todos.destroy');
+        Route::get('/', [GroupController::class, 'index'])->name('groups');
+        Route::get('/{group}', [GroupController::class, 'show'])->name('groups.show');
+        Route::post('/', [GroupController::class, 'create'])->name('groups.create');
+        Route::patch('/{group}', [GroupController::class, 'update'])->name('groups.update');
+        Route::delete('/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
     });
 });

@@ -18,7 +18,6 @@ class Todo extends Model
     protected $fillable = [
         'title',
         'description',
-        'user_id',
         'group_id',
         'type',
         'is_completed',
@@ -32,7 +31,6 @@ class Todo extends Model
         return array(
             'title' => 'required|max:255',
             'description' => 'nullable',
-            'user' => 'required|exists:users,id',
             'group' => 'nullable|exists:groups,id',
             'type' => 'nullable|max:150'
         );
@@ -44,14 +42,6 @@ class Todo extends Model
     public function createdAtAgo()
     {
         return Carbon::instance($this->created_at)->diffForHumans();;
-    }
-
-      /**
-     * Get the user todo belomgs to
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User');
     }
 
     /**

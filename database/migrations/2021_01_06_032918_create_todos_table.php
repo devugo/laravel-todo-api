@@ -17,13 +17,12 @@ class CreateTodosTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
             $table->foreignId('group_id')->nullable();
             $table->string('type', 150)->nullable();
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
 
-            $table->index(['group_id', 'user_id']);
+            $table->index(['group_id']);
         });
     }
 
