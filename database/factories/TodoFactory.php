@@ -23,8 +23,8 @@ class TodoFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->title,
-            'description' => Str::random(50),
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
             'user_id' => 1,
             'type' => Str::random(10)
         ];

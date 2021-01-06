@@ -31,27 +31,30 @@ class TodoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        // validate
-        // $validator = $this->validate($request, Todo::rules());
-        $validator = Validator::make(request()->json()->all(), Todo::rules());
+        //  Get request data
+        $data = request()->json()->all();
 
-         
+        // validate
+        $validator = Validator::make($data, Todo::rules());
+
+        //  return errors if validation fails
         if($validator->fails()){
-            return response()->json($validator->errors(), 400);
+            return response()->json(array('errors' => $validator->errors()), 400);
         }
 
+        // New todo
         $todo = new Todo();
         $created = $todo->create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'user_id' => $request->user,
-            'group_id' => $request->group,
-            'type' => $request->type
+            'title' => $data['title'],
+            'user_id' => $data['user'],
+            'description' => isset($data['description']) ? $data['description'] : NULL,
+            'group_id' => isset($data['group']) ? $data['group'] : NULL,
+            'type' => isset($data['type']) ? $data['type'] : NULL
         ]);
         
-
+        //  return 201 if created successfuly
         if($created){
             return response()->json($created, 201);
         }else{
@@ -62,7 +65,7 @@ class TodoController extends Controller
     }
 
     /**
-     * Display a todo
+     * Display a specific todo
      *
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
@@ -73,36 +76,58 @@ class TodoController extends Controller
             return response()->json($todo, 200);
         }
 
-        return response()->json(array('message' => 'Todo doesn\'t exist'), 400);
+        return response()->json(array('message' => 'Not Found!'), 404);
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Todo $todo)
+    public function update(Todo $todo)
     {
+       
+        // return $todo->title;
+        // return request()->title;
         if($todo){
-            $updated = $todo->update([
-                'title' => $request->title,
-                'description' => $request->description,
-                'user_id' => $request->user,
-                'group_id' => $request->group,
-                'type' => $request->type
-            ]);
+            // //  Get request data
+            $data = request()->json()->all();
+
+            //  validation rules
+            $rules = array(
+                isset($data['title'])  && 'title' => 'required|max:255',
+                // isset($data['description'])  && 'description' => 'nullable',
+                // isset($data['user'])  && 'user' => 'required|exists:users,id',
+                // isset($data['group'])  && 'group' => 'nullable|exists:groups,id',
+                // isset($data['type'])  && 'type' => 'nullable|max:150'
+            );
+
+            // // validate
+            $validator = Validator::make($data, $rules);
+
+            // //  return errors if validation fails
+            if($validator->fails()){
+                return response()->json(array('errors' => $validator->errors()), 400);
+            }
+
+            // Update Todo with updated data
+            $todo->title = isset($data['title']) ? $data['title'] : $todo->title;
+            $todo->description = isset($data['description']) ? $data['description'] : $todo->description;
+            $todo->user_id = isset($data['user']) ? $data['user'] : $todo->user_id;
+            $todo->group_id = isset($data['group']) ? $data['group'] : $todo->group_id;
+            $todo->type = isset($data['type']) ? $data['type'] : $todo->type;
+            $updated = $todo->save();
 
             if($updated){
-                return response()->json($updated, 201);
+                return response()->json($todo, 200);
             }else{
                 return response()->json(array('message' => 'There was an error updating todo'), 400);
             }
         }
 
-        return response()->json(array('message' => 'Todo doesn\'t exist'), 400);
+        return response()->json(array('message' => 'Not Found!'), 404);
     }
 
     /**
@@ -118,6 +143,6 @@ class TodoController extends Controller
             return response()->json(array('message' => 'Todo was deleted successfully'), 204); 
         }
 
-        return response()->json(array('message' => 'Todo doesn\'t exist'), 400);
+        return response()->json(array('message' => 'Not Found!'), 404);
     }
 }

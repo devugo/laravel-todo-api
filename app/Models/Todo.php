@@ -34,7 +34,7 @@ class Todo extends Model
             'description' => 'nullable',
             'user' => 'required|exists:users,id',
             'group' => 'nullable|exists:groups,id',
-            'type' => 'required|max:150'
+            'type' => 'nullable|max:150'
         );
     }
 

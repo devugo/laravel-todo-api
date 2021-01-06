@@ -31,4 +31,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::patch('/{todo}/update', [TodoController::class, 'update'])->name('todos.update');
         Route::delete('/{todo}/destroy', [TodoController::class, 'destroy'])->name('todos.destroy');
     });
+
+    // GROUPS ROUTES
+    Route::group(['prefix' => 'groups'], function () {
+        // Route::get('/', [TodoController::class, 'index'])->name('todos');
+        // Route::get('/{todo}/show', [TodoController::class, 'show'])->name('todos.show');
+        // Route::post('/create', [TodoController::class, 'create'])->name('todos.create');
+        // Route::patch('/{todo}/update', [TodoController::class, 'update'])->name('todos.update');
+        // Route::delete('/{todo}/destroy', [TodoController::class, 'destroy'])->name('todos.destroy');
+    });
 });
