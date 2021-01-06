@@ -41,7 +41,7 @@ class TodoController extends Controller
 
         //  return errors if validation fails
         if($validator->fails()){
-            return response()->json(array('errors' => $validator->errors()), 400);
+            return response()->json(array('errors' => $validator->errors(), 'success' => false), 400);
         }
 
         // New todo
@@ -58,7 +58,7 @@ class TodoController extends Controller
             return response()->json($created, 201);
         }
 
-        return response()->json(array('message' => 'There was an error creating todo'), 400);
+        return response()->json(array('message' => 'There was an error creating todo', 'success' => false), 400);
     }
 
     /**
@@ -73,12 +73,12 @@ class TodoController extends Controller
             return response()->json($todo, 200);
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 
 
     /**
-     * Update the specified resource in storage.
+     * Update a specific todo
      *
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
@@ -103,7 +103,7 @@ class TodoController extends Controller
 
             // //  return errors if validation fails
             if($validator->fails()){
-                return response()->json(array('errors' => $validator->errors()), 400);
+                return response()->json(array('errors' => $validator->errors(), 'success' => false), 400);
             }
 
             // Update Todo with updated data
@@ -113,18 +113,19 @@ class TodoController extends Controller
             $todo->type = isset($data['type']) ? $data['type'] : $todo->type;
             $updated = $todo->save();
 
+            // If successfully updated
             if($updated){
                 return response()->json($todo, 200);
             }else{
-                return response()->json(array('message' => 'There was an error updating todo'), 400);
+                return response()->json(array('message' => 'There was an error updating todo', 'success' => false), 400);
             }
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a specific todo
      *
      * @param  \App\Models\Todo  $todo
      * @return \Illuminate\Http\Response
@@ -133,9 +134,9 @@ class TodoController extends Controller
     {
         if($todo){
             $todo->delete();
-            return response()->json(array('message' => 'Todo was deleted successfully'), 204); 
+            return response()->json(array('message' => 'Todo was deleted successfully', 'success' => true), 204); 
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 }

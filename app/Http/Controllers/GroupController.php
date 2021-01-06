@@ -35,7 +35,7 @@ class GroupController extends Controller
 
         //  return errors if validation fails
         if($validator->fails()){
-            return response()->json(array('errors' => $validator->errors()), 400);
+            return response()->json(array('errors' => $validator->errors(), 'success' => false), 400);
         }
 
         // New Group
@@ -50,7 +50,7 @@ class GroupController extends Controller
             return response()->json($created, 201);
         }
 
-        return response()->json(array('message' => 'There was an error creating group'), 400);
+        return response()->json(array('message' => 'There was an error creating group', 'success' => false), 400);
     }
 
     /**
@@ -65,11 +65,11 @@ class GroupController extends Controller
             return response()->json($group, 200);
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a specific todo
      *
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
@@ -92,7 +92,7 @@ class GroupController extends Controller
 
             // //  return errors if validation fails
             if($validator->fails()){
-                return response()->json(array('errors' => $validator->errors()), 400);
+                return response()->json(array('errors' => $validator->errors(), 'success' => false), 400);
             }
 
             // Update group with updated data
@@ -100,18 +100,19 @@ class GroupController extends Controller
             $group->description = isset($data['description']) ? $data['description'] : $group->description;
             $updated = $group->save();
 
+            // If successfully updated
             if($updated){
                 return response()->json($group, 200);
             }else{
-                return response()->json(array('message' => 'There was an error updating group'), 400);
+                return response()->json(array('message' => 'There was an error updating group', 'success' => false), 400);
             }
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a specific group
      *
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
@@ -120,9 +121,9 @@ class GroupController extends Controller
     {
         if($group){
             $group->delete();
-            return response()->json(array('message' => 'Group was deleted successfully'), 204); 
+            return response()->json(array('message' => 'Group was deleted successfully', 'success' => true), 204); 
         }
 
-        return response()->json(array('message' => 'Not Found!'), 404);
+        return response()->json(array('message' => 'Not Found!', 'success' => false), 404);
     }
 }
